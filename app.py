@@ -157,14 +157,15 @@ with tab4:
         f.update_traces(textinfo="percent+label")
         st.plotly_chart(f, width="stretch")
     with c2:
-        samp = df[(df["NA_Sales"] > 0) & (df["EU_Sales"] > 0)].sample(min(len(df), 3000), random_state=1)
+        both = df[(df["NA_Sales"] > 0) & (df["EU_Sales"] > 0)]
+        samp = both.sample(min(len(both), 3000), random_state=1) if len(both) else both
         f = px.scatter(samp, x="NA_Sales", y="EU_Sales", color="Genre", opacity=0.6, log_x=True, log_y=True,
                        hover_data=["Name", "Platform"], title="Penjualan NA vs Eropa per Game (skala log, sampel ≤3.000)")
         f.update_layout(xaxis_title="North America (juta unit)", yaxis_title="Europe (juta unit)")
         st.plotly_chart(f, width="stretch")
     jp = df.groupby("Genre")["JP_Sales"].sum()
     na = df.groupby("Genre")["NA_Sales"].sum()
-    corr = df["NA_Sales"].corr(df["EU_Sales"])
+    corr = both["NA_Sales"].corr(both["EU_Sales"]) if len(both) > 1 else float("nan")
     insight(f"North America menyumbang <b>{reg.loc[0, 'Penjualan'] / reg['Penjualan'].sum():.0%}</b> penjualan. "
             f"Korelasi NA–Eropa = <b>{corr:.2f}</b> (selera pasar serupa). Di Jepang genre teratas adalah <b>{jp.idxmax()}</b>, "
             f"sedangkan di North America <b>{na.idxmax()}</b>.")
