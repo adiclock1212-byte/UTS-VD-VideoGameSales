@@ -1,5 +1,5 @@
 """Dashboard Interaktif Penjualan Video Game Dunia - UTS Visualisasi Data (Ganjil 2026/2027)
-Muhammad Alva Gustav Al Fallah | NIM 241041007
+Adi Setiawan | NIM 241041002
 """
 from pathlib import Path
 
@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-NAMA, NIM = "Muhammad Alva Gustav Al Fallah", "241041007"
+NAMA, NIM = "Adi Setiawan", "241041002"
 DATA = Path(__file__).parent / "data" / "vgsales_clean.csv"
 
 # ---- Palet warna konsisten ----
@@ -23,8 +23,11 @@ st.markdown(
     .block-container {padding-top: 1.5rem;}
     div[data-testid="stMetric"] {background:#F3F6FA; border-left:5px solid #1F4E79;
         padding:12px 16px; border-radius:8px;}
+    div[data-testid="stMetric"] * {color:#1B2430 !important;}
+    div[data-testid="stMetricLabel"] * {color:#4A5568 !important; font-weight:600;}
     .insight {background:#FFF8EC; border-left:5px solid #F28E2B; padding:10px 14px;
-        border-radius:6px; margin:6px 0 14px 0; font-size:0.95rem;}
+        border-radius:6px; margin:6px 0 14px 0; font-size:0.95rem; color:#1B2430 !important;}
+    .insight * {color:#1B2430 !important;}
     </style>""",
     unsafe_allow_html=True,
 )
@@ -90,7 +93,7 @@ with tab1:
     tot_year = yearly.sum(axis=1)
     py_, pv = tot_year.idxmax(), tot_year.max()
     fig.add_annotation(x=py_, y=yearly.loc[py_, "North America"], text=f"Puncak total: {py_}<br>{pv:,.0f} jt unit",
-                       showarrow=True, arrowhead=2, ax=-70, ay=-40, bgcolor="#FFF8EC", bordercolor=ORANGE)
+                       showarrow=True, arrowhead=2, ax=-70, ay=-40, bgcolor="#FFF8EC", bordercolor=ORANGE, font=dict(color="#1B2430"))
     fig.update_layout(xaxis_title="Tahun rilis", yaxis_title="Juta unit", hovermode="x unified",
                       legend=dict(orientation="h", y=1.12), margin=dict(t=80))
     st.plotly_chart(fig, width="stretch")
